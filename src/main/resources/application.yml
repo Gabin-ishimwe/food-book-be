@@ -1,0 +1,23 @@
+server:
+  port: 5000
+  error:
+    include-message: always
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/springdb
+    username: andelarwanda
+    password: andela123
+
+app:
+  jwt:
+    secret: asfdasdfasdfasdfasdfsaf
