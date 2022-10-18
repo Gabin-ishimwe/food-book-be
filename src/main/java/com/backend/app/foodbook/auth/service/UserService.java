@@ -5,6 +5,7 @@ import com.backend.app.foodbook.auth.entity.User;
 import com.backend.app.foodbook.auth.exception.UserExistsException;
 import com.backend.app.foodbook.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,9 +13,12 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    UserService(UserRepository userRepository) {
+    UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User userRegister(RegisterDto registerDto) throws UserExistsException {
@@ -28,7 +32,7 @@ public class UserService {
                 registerDto.getFirstName(),
                 registerDto.getLastName(),
                 registerDto.getEmail(),
-                registerDto.getPassword(),
+                passwordEncoder.encode(registerDto.getPassword()),
                 registerDto.getContactNumber(),
                 "ROLE_USER",
                 null

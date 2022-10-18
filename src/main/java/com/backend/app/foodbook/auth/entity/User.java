@@ -1,6 +1,7 @@
 package com.backend.app.foodbook.auth.entity;
 
 import com.backend.app.foodbook.business.entity.Business;
+import com.backend.app.foodbook.role.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -51,7 +52,12 @@ public class User {
     )
     private String contactNumber;
 
-    private String role;    // ROLE_ADMIN, ROLE_USER, ROLE_VENDOR
+    @OneToMany
+    @JoinColumn(
+            name = "role_id",
+            referencedColumnName = "id"
+    )
+   private List<Role> roles;
 
 
     @OneToMany
