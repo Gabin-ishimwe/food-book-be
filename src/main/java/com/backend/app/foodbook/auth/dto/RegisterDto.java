@@ -40,4 +40,6 @@ public class RegisterDto {
             message = "Contact number is required"
     )
     private String ContactNumber;
+
+    private String testing;
 }
