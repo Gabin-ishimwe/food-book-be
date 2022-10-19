@@ -43,11 +43,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             } catch (IllegalArgumentException i) {
                 throw new IllegalArgumentException("Unable to get token");
             } catch (ExpiredJwtException e) {
-//                throw new ExpiredJwtException("Jwt has expired");
-                System.out.println("Jwt expired");
+                try {
+                    throw new Exception("JWT has expired");
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         } else {
-            System.out.println("Jwt doesn't start with Bearer ");
+            try {
+                throw new Exception("JWT doesn't start with Bearer");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
 
         if(userName != null && SecurityContextHolder.getContext().getAuthentication() != null) {

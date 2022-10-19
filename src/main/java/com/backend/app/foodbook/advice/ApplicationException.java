@@ -1,6 +1,8 @@
 package com.backend.app.foodbook.advice;
 
+import com.backend.app.foodbook.auth.exception.UserAuthException;
 import com.backend.app.foodbook.auth.exception.UserExistsException;
+import com.backend.app.foodbook.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -49,6 +51,31 @@ public class ApplicationException {
                 null,
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 errorTime
-        ), HttpStatus.INTERNAL_SERVER_ERROR);
+        ), HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<?> handleNotFoundException(NotFoundException notFoundException) {
+        LocalDateTime errorTime = LocalDateTime.now();
+        return  new ResponseEntity<>( new ErrorDetails(
+                        notFoundException.getMessage(),
+                        null,
+                        HttpStatus.NOT_FOUND,
+                        errorTime
+                ), HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(UserAuthException.class)
+    public ResponseEntity<?> handleInvalidCredentialException(UserAuthException userAuthException) {
+        LocalDateTime errorTime = LocalDateTime.now();
+        return  new ResponseEntity<>( new ErrorDetails(
+                userAuthException.getMessage(),
+                null,
+                HttpStatus.UNAUTHORIZED,
+                errorTime
+        ), HttpStatus.NOT_FOUND
+        );
     }
 }

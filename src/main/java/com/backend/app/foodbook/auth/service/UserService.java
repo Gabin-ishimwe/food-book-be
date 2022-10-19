@@ -1,11 +1,14 @@
 package com.backend.app.foodbook.auth.service;
 
-import com.backend.app.foodbook.auth.dto.AuthRegisterDto;
+import com.backend.app.foodbook.auth.dto.AuthDto;
+import com.backend.app.foodbook.auth.dto.LoginDto;
 import com.backend.app.foodbook.auth.dto.RegisterDto;
 import com.backend.app.foodbook.auth.entity.User;
+import com.backend.app.foodbook.auth.exception.UserAuthException;
 import com.backend.app.foodbook.auth.exception.UserExistsException;
 import com.backend.app.foodbook.auth.repository.UserRepository;
 import com.backend.app.foodbook.configuration.SimpleAuthManager;
+import com.backend.app.foodbook.exception.NotFoundException;
 import com.backend.app.foodbook.role.entity.Role;
 import com.backend.app.foodbook.role.repository.RoleRepository;
 import com.backend.app.foodbook.service.JwtService;
@@ -40,7 +43,7 @@ public class UserService {
         this.roleRepository = roleRepository;
     }
 
-    public AuthRegisterDto userRegister(RegisterDto registerDto) throws UserExistsException {
+    public AuthDto userRegister(RegisterDto registerDto) throws UserExistsException, NotFoundException {
         User findUser = userRepository.findByEmail(registerDto.getEmail());
         List<Role> roles = new ArrayList<>();
         if (findUser != null) {
@@ -48,7 +51,8 @@ public class UserService {
         }
         Role userRole = roleRepository.findByName("USER");
         if(userRole == null) {
-            System.out.println("Resource not found");
+//            System.out.println("Resource not found");
+            throw new NotFoundException("User not found");
         }
         roles.add(userRole);
         User user = new User(
@@ -62,11 +66,11 @@ public class UserService {
                 null
         );
 
-        User registeredUser = userRepository.save(user);
-        return createJwt(registeredUser);
+        userRepository.save(user);
+        return new AuthDto("User successfully registered", null);
     }
 
-    public AuthRegisterDto createJwt(User user) {
+    public AuthDto createJwt(User user) {
         String userEmail = user.getEmail();
         String userPassword = user.getPassword();
         UserDetails userDetails = jwtService.loadUserByUsername(userEmail);
@@ -74,9 +78,25 @@ public class UserService {
 
         String token = jwtUtil.generateToken(userDetails);
 
-        return new AuthRegisterDto("User succesfull registered", token);
+        return new AuthDto("User logged in successfully", token);
 
+    }
 
+    public AuthDto userLogin(LoginDto loginDto) throws NotFoundException, UserAuthException {
+        String userEmail = loginDto.getEmail();
+        String password = loginDto.getPassword();
+
+        User findUser = userRepository.findByEmail(userEmail);
+        if(findUser != null) {
+            boolean passwordVerification = passwordEncoder.matches(password, findUser.getPassword());
+            if(passwordVerification) {
+                return createJwt(findUser);
+            } else {
+                throw new UserAuthException("Invalid Credential, Try again");
+            }
+        }else {
+            throw new NotFoundException("User doesn't exist");
+        }
     }
 
 }

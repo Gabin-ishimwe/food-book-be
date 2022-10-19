@@ -19,6 +19,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
 
+    private static final String[] WHITE_LIST_URL = {
+            "/api/auth/register",
+            "/api/auth/login"
+    };
+
     @Autowired
     private JwtAuthEntryPoint jwtAuthEntryPoint;
 
@@ -35,7 +40,7 @@ public class WebSecurityConfig {
         httpSecurity.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/api/auth/register").permitAll() // end points we don't want to protect
+                .antMatchers(WHITE_LIST_URL).permitAll() // end points we don't want to protect
                 .anyRequest()
                 .authenticated()
                 .and()
