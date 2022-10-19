@@ -35,7 +35,7 @@ public class WebSecurityConfig {
         httpSecurity.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers().permitAll() // end points we don't want to protect
+                .antMatchers("/api/auth/register").permitAll() // end points we don't want to protect
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -44,7 +44,7 @@ public class WebSecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 

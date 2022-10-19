@@ -20,4 +20,4 @@ spring:
 
 app:
   jwt:
-    secret: asfdasdfasdfasdfasdfsaf
+    secret: foodbookjwtsecretkey
