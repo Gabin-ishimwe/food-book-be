@@ -1,0 +1,24 @@
+server:
+  port: ${PORT}
+  error:
+    include-message: always
+
+spring:
+  profiles: prod
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${USER_NAME}
+    password: ${PASSWORD}
+
+app:
+  jwt:
+    secret: ${JWT_SECRET_KEY}
