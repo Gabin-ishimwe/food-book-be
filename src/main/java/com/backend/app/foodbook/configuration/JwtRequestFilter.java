@@ -50,11 +50,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 }
             }
         } else {
-            try {
-                throw new Exception("JWT doesn't start with Bearer");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            filterChain.doFilter(request, response);
+            return;
         }
 
         if(userName != null && SecurityContextHolder.getContext().getAuthentication() != null) {

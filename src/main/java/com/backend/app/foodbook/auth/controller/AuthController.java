@@ -3,6 +3,7 @@ package com.backend.app.foodbook.auth.controller;
 import com.backend.app.foodbook.auth.dto.AuthDto;
 import com.backend.app.foodbook.auth.dto.LoginDto;
 import com.backend.app.foodbook.auth.dto.RegisterDto;
+import com.backend.app.foodbook.auth.exception.UserAuthException;
 import com.backend.app.foodbook.auth.exception.UserExistsException;
 import com.backend.app.foodbook.auth.service.UserService;
 import com.backend.app.foodbook.exception.NotFoundException;
@@ -37,8 +38,8 @@ public class AuthController {
     }
 
     @PostMapping(path = "/login")
-    public AuthDto authLogin(@RequestBody @Valid LoginDto loginDto) {
-        return null;
+    public AuthDto authLogin(@RequestBody @Valid LoginDto loginDto) throws NotFoundException, UserAuthException {
+        return userService.userLogin(loginDto);
     }
 }
 

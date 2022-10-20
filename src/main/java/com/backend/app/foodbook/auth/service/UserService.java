@@ -95,7 +95,7 @@ public class UserService {
                 throw new UserAuthException("Invalid Credential, Try again");
             }
         }else {
-            throw new NotFoundException("User doesn't exist");
+            throw new UserAuthException("Invalid Credential, Try again");
         }
     }
 
