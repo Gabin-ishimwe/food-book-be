@@ -19,8 +19,6 @@ public class JwtUtil {
     @Value("${app.jwt.secret}")
     private String jwtSecretKey;
 
-    private int TOKEN_VALIDITY = 3600; // 1hr (3600 secs)
-
     public String getUserNameFromToken(String token) {
         // ...
         return getClaimFromToken(token, Claims::getSubject);
@@ -34,7 +32,7 @@ public class JwtUtil {
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(jwtSecretKey).parseClaimsJwt(token).getBody();
+        return Jwts.parser().setSigningKey(jwtSecretKey).parseClaimsJws(token).getBody();
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
@@ -53,11 +51,13 @@ public class JwtUtil {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        // 1hr (3600 secs)
+        int TOKEN_VALIDITY = 3600;
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 1000L))
                 .signWith(SignatureAlgorithm.HS256, jwtSecretKey)
                 .compact();
     }

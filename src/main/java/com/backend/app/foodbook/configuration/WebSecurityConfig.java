@@ -36,7 +36,7 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf()
+        httpSecurity.cors().and().csrf()
                 .disable()
                 .authorizeRequests()
                 .antMatchers(WHITE_LIST_URL).permitAll() // end points we don't want to protect

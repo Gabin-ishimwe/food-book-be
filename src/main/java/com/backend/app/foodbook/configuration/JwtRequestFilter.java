@@ -1,6 +1,6 @@
 package com.backend.app.foodbook.configuration;
 
-import com.backend.app.foodbook.service.JwtService;
+import com.backend.app.foodbook.auth.service.JwtService;
 import com.backend.app.foodbook.utils.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +34,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String jwtToken = null;
         String userName = null;
         if(header != null && header.startsWith("Bearer ")) {
-            jwtToken = header.substring(7);
+            jwtToken = header.split(" ")[1];
             // extracting payload from token
             try{
                 // ...
                 userName = jwtUtil.getUserNameFromToken(jwtToken);
+                System.out.println(userName);
 
             } catch (IllegalArgumentException i) {
                 throw new IllegalArgumentException("Unable to get token");
@@ -53,8 +54,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
-        if(userName != null && SecurityContextHolder.getContext().getAuthentication() != null) {
+        System.out.println("after getting username");
+        if(userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = jwtService.loadUserByUsername(userName);
             if(jwtUtil.validateToken(jwtToken, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,

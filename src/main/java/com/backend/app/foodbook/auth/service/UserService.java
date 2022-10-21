@@ -11,7 +11,6 @@ import com.backend.app.foodbook.configuration.SimpleAuthManager;
 import com.backend.app.foodbook.exception.NotFoundException;
 import com.backend.app.foodbook.role.entity.Role;
 import com.backend.app.foodbook.role.repository.RoleRepository;
-import com.backend.app.foodbook.service.JwtService;
 import com.backend.app.foodbook.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -51,7 +50,6 @@ public class UserService {
         }
         Role userRole = roleRepository.findByName("USER");
         if(userRole == null) {
-//            System.out.println("Resource not found");
             throw new NotFoundException("User not found");
         }
         roles.add(userRole);
@@ -97,6 +95,10 @@ public class UserService {
         }else {
             throw new UserAuthException("Invalid Credential, Try again");
         }
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
 }
