@@ -39,8 +39,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try{
                 // ...
                 userName = jwtUtil.getUserNameFromToken(jwtToken);
-                System.out.println(userName);
-
             } catch (IllegalArgumentException i) {
                 throw new IllegalArgumentException("Unable to get token");
             } catch (ExpiredJwtException e) {
@@ -54,7 +52,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        System.out.println("after getting username");
         if(userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = jwtService.loadUserByUsername(userName);
             if(jwtUtil.validateToken(jwtToken, userDetails)) {

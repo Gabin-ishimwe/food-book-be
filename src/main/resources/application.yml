@@ -12,6 +12,9 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
   datasource:
     url: jdbc:postgresql://localhost:5432/springdb
@@ -21,3 +24,7 @@ spring:
 app:
   jwt:
     secret: foodbookjwtsecretkey
+  authorities:
+    USER: USER
+    VENDOR: VENDOR
+    ADMIN: ADMIN

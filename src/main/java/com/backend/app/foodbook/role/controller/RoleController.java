@@ -16,11 +16,24 @@ public class RoleController {
     RoleController(RoleService roleService) {
         this.roleService = roleService;
     }
-    @GetMapping
-//    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(path = "forAdmin")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getRoles() {
-        return "Users, admin, vendor";
+        return "Accessible for admin only";
     }
+
+    @GetMapping(path = "forUser")
+    @PreAuthorize("hasRole('USER')" + "&& hasRole('ADMIN')")
+    public String forUser() {
+        return "Accessible for user only";
+    }
+
+    @GetMapping(path = "forVendor")
+    @PreAuthorize("hasRole('VENDOR')")
+    public String forVendor() {
+        return "Accessible for vendor only";
+    }
+
 
     @PostMapping()
     public User assignRole(@RequestParam("userId") Long userId, @RequestParam("roleId") Long roleId) throws NotFoundException {

@@ -21,6 +21,9 @@ public class WebSecurityConfig {
 
     private static final String[] WHITE_LIST_URL = {
             "/api/auth/**",
+            "/v2/api-docs",
+            "/swagger-ui",
+            "/swagger-resources/**"
     };
 
     @Autowired
