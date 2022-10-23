@@ -1,5 +1,7 @@
 package com.backend.app.foodbook.advice;
 
+import com.backend.app.foodbook.auth.exception.UserAccessDenied;
+import com.backend.app.foodbook.auth.exception.UserAuthEntryException;
 import com.backend.app.foodbook.auth.exception.UserAuthException;
 import com.backend.app.foodbook.auth.exception.UserExistsException;
 import com.backend.app.foodbook.exception.NotFoundException;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.naming.AuthenticationException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,39 +46,63 @@ public class ApplicationException {
         ), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleGlobalException(Exception exception) {
-        LocalDateTime errorTime = LocalDateTime.now();
-        return new ResponseEntity<>(new ErrorDetails(
-                exception.getMessage(),
-                null,
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                errorTime
-        ), HttpStatus.INTERNAL_SERVER_ERROR
-        );
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<?> handleGlobalException(Exception exception) {
+//        LocalDateTime errorTime = LocalDateTime.now();
+//        return new ResponseEntity<>(new ErrorDetails(
+//                exception.getMessage(),
+//                null,
+//                HttpStatus.INTERNAL_SERVER_ERROR,
+//                errorTime
+//        ), HttpStatus.INTERNAL_SERVER_ERROR
+//        );
+//    }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> handleNotFoundException(NotFoundException notFoundException) {
         LocalDateTime errorTime = LocalDateTime.now();
-        return  new ResponseEntity<>( new ErrorDetails(
-                        notFoundException.getMessage(),
-                        null,
-                        HttpStatus.NOT_FOUND,
-                        errorTime
-                ), HttpStatus.NOT_FOUND
+        return new ResponseEntity<>(new ErrorDetails(
+                notFoundException.getMessage(),
+                null,
+                HttpStatus.NOT_FOUND,
+                errorTime
+        ), HttpStatus.NOT_FOUND
         );
     }
 
     @ExceptionHandler(UserAuthException.class)
     public ResponseEntity<?> handleInvalidCredentialException(UserAuthException userAuthException) {
         LocalDateTime errorTime = LocalDateTime.now();
-        return  new ResponseEntity<>( new ErrorDetails(
+        return new ResponseEntity<>(new ErrorDetails(
                 userAuthException.getMessage(),
                 null,
                 HttpStatus.UNAUTHORIZED,
                 errorTime
-        ), HttpStatus.NOT_FOUND
+        ), HttpStatus.UNAUTHORIZED
+        );
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<?> handleAuthEntryException(UserAuthEntryException userAuthEntryException) {
+        LocalDateTime errorTime = LocalDateTime.now();
+        return new ResponseEntity<>(new ErrorDetails(
+                userAuthEntryException.getMessage(),
+                null,
+                HttpStatus.UNAUTHORIZED,
+                errorTime
+        ), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(UserAccessDenied.class)
+    public ResponseEntity<?> handleAccessDeniedException(UserAccessDenied userAccessDenied) {
+        LocalDateTime errorTime = LocalDateTime.now();
+        return new ResponseEntity<>(
+                new ErrorDetails(
+                        userAccessDenied.getMessage(),
+                        null,
+                        HttpStatus.FORBIDDEN,
+                        errorTime
+                ), HttpStatus.FORBIDDEN
         );
     }
 }

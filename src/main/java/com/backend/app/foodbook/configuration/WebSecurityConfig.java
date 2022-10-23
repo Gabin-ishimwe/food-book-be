@@ -22,7 +22,7 @@ public class WebSecurityConfig {
     private static final String[] WHITE_LIST_URL = {
             "/api/auth/**",
             "/v2/api-docs",
-            "/swagger-ui",
+            "/swagger-ui/**",
             "/swagger-resources/**"
     };
 
@@ -31,6 +31,9 @@ public class WebSecurityConfig {
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
+
+    @Autowired
+    private AccessDenied accessDenied;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -46,7 +49,7 @@ public class WebSecurityConfig {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .exceptionHandling().authenticationEntryPoint(jwtAuthEntryPoint)
+                .exceptionHandling().authenticationEntryPoint(jwtAuthEntryPoint).accessDeniedHandler(accessDenied)
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
