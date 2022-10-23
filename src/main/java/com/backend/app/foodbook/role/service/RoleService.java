@@ -10,11 +10,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class RoleService {
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
     RoleService(UserRepository userRepository, RoleRepository roleRepository) {
@@ -25,7 +26,7 @@ public class RoleService {
     public User addRolePermission(User user, Long id) throws NotFoundException {
         Role findRole = roleRepository.findById(id).orElseThrow(() -> new NotFoundException("Role Not found"));
         List<Role> roles = user.getRoles();
-        if(roles == null) {
+        if (roles == null) {
             user.setRoles(List.of(findRole));
             userRepository.save(user);
             return user;
@@ -41,18 +42,21 @@ public class RoleService {
     public User addRolePermissions(Long userId, Long id) throws NotFoundException {
         Role findRole = roleRepository.findById(id).orElseThrow(() -> new NotFoundException("Role Not found"));
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User Not found"));
-        System.out.println(findRole);
         List<Role> roles = user.getRoles();
-        if(roles == null) {
+        if (roles == null) {
             user.setRoles(List.of(findRole));
             userRepository.save(user);
             return user;
+        }
+        for (Role role : roles) {
+            if (Objects.equals(role.getName(), findRole.getName())) {
+                return user;
+            }
         }
         List<Role> addingRole = new ArrayList<>(roles);
         addingRole.add(findRole);
         user.setRoles(addingRole);
         userRepository.save(user);
-        System.out.println(user);
         return user;
     }
 

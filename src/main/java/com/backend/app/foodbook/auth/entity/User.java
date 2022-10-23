@@ -80,12 +80,24 @@ public class User {
     private List<Role> roles;
 
 
-    @OneToMany(
-            cascade = CascadeType.ALL
-    )
-    @JoinColumn(
-            name = "user_ids",
-            referencedColumnName = "id"
+    //    @OneToMany(
+//            cascade = CascadeType.ALL
+//    )
+//    @JoinColumn(
+//            name = "user_ids",
+//            referencedColumnName = "id"
+//    )
+    @ManyToMany
+    @JoinTable(
+            name = "user_business_mapping",
+            joinColumns = @JoinColumn(
+                    name = "user_id",
+                    referencedColumnName = "id"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "business_id",
+                    referencedColumnName = "id"
+            )
     )
     private List<Business> businesses;
 }

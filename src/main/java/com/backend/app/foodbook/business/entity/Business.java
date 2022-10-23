@@ -42,5 +42,5 @@ public class Business {
     @Column(
             name = "business_contact"
     )
-    private int businessContact;
+    private String businessContact;
 }
