@@ -21,13 +21,13 @@ public class MealDto {
     )
     private String menuDescription;
 
-    @NotBlank(
-            message = "Meal image is required"
-    )
+    //    @NotBlank(
+//            message = "Meal image is required"
+//    )
     private MultipartFile[] images;
 
-    @NotBlank(
-            message = "Meal price is required"
-    )
+    //    @NotEmpty(
+//            message = "Meal price is required"
+//    )
     private Long price;
 }

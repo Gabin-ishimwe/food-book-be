@@ -26,6 +26,8 @@ public class Meal {
     private Long id;
     private String name;
     private String description;
+
+    @Lob
     private List<String> images;
     private Long price;
 }

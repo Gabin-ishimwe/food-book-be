@@ -20,7 +20,7 @@ public class CloudinaryConfig {
     private String apiSecret;
 
     @Bean
-    public Cloudinary cloudinaryConfig() {
+    public Cloudinary cloudinaryConfigs() {
         Cloudinary cloudinary = null;
         Map config = new HashMap();
         config.put("cloud_name", cloudName);
