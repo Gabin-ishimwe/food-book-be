@@ -19,6 +19,19 @@ spring:
     username: ${USER_NAME}
     password: ${PASSWORD}
 
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
+
 app:
   jwt:
     secret: ${JWT_SECRET_KEY}
+
+
+cloudinary:
+  cloud_name: dmepvxtwv
+  api_key: 315539454121522
+  api_secret: loWqc4xiNEmb1YUa812FvHzrjd0

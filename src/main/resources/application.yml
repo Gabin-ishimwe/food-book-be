@@ -21,6 +21,13 @@ spring:
     username: andelarwanda
     password: andela123
 
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
+
 app:
   jwt:
     secret: foodbookjwtsecretkey
@@ -28,3 +35,8 @@ app:
     USER: USER
     VENDOR: VENDOR
     ADMIN: ADMIN
+
+cloudinary:
+  cloud_name: dmepvxtwv
+  api_key: 315539454121522
+  api_secret: loWqc4xiNEmb1YUa812FvHzrjd0
