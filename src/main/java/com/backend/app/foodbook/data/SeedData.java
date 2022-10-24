@@ -2,6 +2,8 @@ package com.backend.app.foodbook.data;
 
 import com.backend.app.foodbook.auth.entity.User;
 import com.backend.app.foodbook.auth.repository.UserRepository;
+import com.backend.app.foodbook.business.entity.Business;
+import com.backend.app.foodbook.business.repository.BusinessRepository;
 import com.backend.app.foodbook.exception.NotFoundException;
 import com.backend.app.foodbook.role.entity.Role;
 import com.backend.app.foodbook.role.repository.RoleRepository;
@@ -11,7 +13,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -28,6 +29,9 @@ public class SeedData implements CommandLineRunner {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private BusinessRepository businessRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -52,6 +56,16 @@ public class SeedData implements CommandLineRunner {
         Role roleVendor = roleRepository.save(vendor);
         Role roleAdmin = roleRepository.save(admin);
 
+        Business business1 = new Business(
+                null,
+                "Meze Fresh",
+                "Mexican Restaurant in Kigali",
+                "mezefresh@gmail.com",
+                "07887878787"
+        );
+
+        Business business = businessRepository.save(business1);
+
         User user1 = new User(
                 null,
                 "John",
@@ -74,7 +88,7 @@ public class SeedData implements CommandLineRunner {
                 passwordEncoder.encode("#Password123"),
                 "0787857036",
                 null,
-                null
+                List.of(business)
         );
         User savedUser2 = userRepository.save(user2);
         savedUser2.setRoles(List.of(roleUser, roleVendor));

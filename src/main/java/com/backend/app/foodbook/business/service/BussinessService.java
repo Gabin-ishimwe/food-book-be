@@ -5,9 +5,13 @@ import com.backend.app.foodbook.auth.repository.UserRepository;
 import com.backend.app.foodbook.business.dto.BusinessDto;
 import com.backend.app.foodbook.business.entity.Business;
 import com.backend.app.foodbook.business.repository.BusinessRepository;
+import com.backend.app.foodbook.exception.NotFoundException;
 import com.backend.app.foodbook.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class BussinessService {
@@ -46,5 +50,40 @@ public class BussinessService {
         userRepository.save(findUser);
 
         return businessCreated;
+    }
+
+    public Business editBusiness(BusinessDto businessDto, Long businessId) throws NotFoundException {
+        Business findBusiness = businessRepository.findById(businessId).orElseThrow(() -> new NotFoundException("Business doesn't exist"));
+
+        if (!Objects.equals(findBusiness.getBusinessName(), businessDto.getBusinessName()) &&
+                businessDto.getBusinessName() != null) {
+            findBusiness.setBusinessName(businessDto.getBusinessName());
+        }
+        if (!Objects.equals(findBusiness.getBusinessDescription(), businessDto.getBusinessDescription()) &&
+                businessDto.getBusinessDescription() != null) {
+            findBusiness.setBusinessDescription(businessDto.getBusinessDescription());
+        }
+
+        if (!Objects.equals(findBusiness.getBusinessEmail(), businessDto.getBusinessEmail()) &&
+                businessDto.getBusinessEmail() != null) {
+            findBusiness.setBusinessEmail(businessDto.getBusinessEmail());
+        }
+
+        if (!Objects.equals(findBusiness.getBusinessContact(), businessDto.getBusinessContact()) &&
+                businessDto.getBusinessContact() != null) {
+            findBusiness.setBusinessContact(businessDto.getBusinessContact());
+        }
+
+
+        return businessRepository.save(findBusiness);
+
+    }
+
+    public Business getOneBusiness(Long businessId) throws NotFoundException {
+        return businessRepository.findById(businessId).orElseThrow(() -> new NotFoundException("Business doesn't exist"));
+    }
+
+    public List<Business> getAllBusiness() {
+        return businessRepository.findAll();
     }
 }
