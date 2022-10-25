@@ -61,7 +61,9 @@ public class SeedData implements CommandLineRunner {
                 "Meze Fresh",
                 "Mexican Restaurant in Kigali",
                 "mezefresh@gmail.com",
-                "07887878787"
+                "07887878787",
+                null,
+                null
         );
 
         Business business = businessRepository.save(business1);

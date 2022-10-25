@@ -1,10 +1,14 @@
 package com.backend.app.foodbook.business.entity;
 
+import com.backend.app.foodbook.auth.entity.User;
+import com.backend.app.foodbook.meal.entity.Meal;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -43,4 +47,19 @@ public class Business {
             name = "business_contact"
     )
     private String businessContact;
+
+    @OneToMany(
+            fetch = FetchType.EAGER
+    )
+    @JoinColumn(
+            name = "business_id",
+            referencedColumnName = "id"
+    )
+    private List<Meal> meals;
+
+    @JsonIgnoreProperties({"businesses"})
+    @ManyToOne(
+            fetch = FetchType.LAZY
+    )
+    private User user;
 }

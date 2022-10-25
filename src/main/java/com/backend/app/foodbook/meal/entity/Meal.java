@@ -27,7 +27,7 @@ public class Meal {
     private String name;
     private String description;
 
-    @Lob
+    @ElementCollection
     private List<String> images;
     private Long price;
 }

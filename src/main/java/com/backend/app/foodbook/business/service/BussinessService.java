@@ -41,7 +41,9 @@ public class BussinessService {
                 businessDto.getBusinessName(),
                 businessDto.getBusinessDescription(),
                 businessDto.getBusinessEmail(),
-                businessDto.getBusinessContact()
+                businessDto.getBusinessContact(),
+                null,
+                null
         );
 
         Business businessCreated = businessRepository.save(business);
