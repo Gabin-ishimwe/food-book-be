@@ -79,7 +79,6 @@ public class User {
     )
     private List<Role> roles;
 
-
     @OneToMany(
             fetch = FetchType.LAZY
     )

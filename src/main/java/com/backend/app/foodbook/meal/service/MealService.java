@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -53,6 +54,7 @@ public class MealService {
         }
 
         List<String> imageUrls = new ArrayList<>();
+        System.out.println(Arrays.toString(mealDto.getImages()) + " images--------");
         if (mealDto.getImages() == null) {
             throw new MultipartException("Images are required");
         }
@@ -79,5 +81,19 @@ public class MealService {
         businessRepository.save(findBusiness);
 
         return new ResponseEntity<>(new ResponseDto("Meal created", createdMeal), HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<?> findAllMeals() {
+        List<Meal> allMeals = mealRepository.findAll();
+        return new ResponseEntity<>(allMeals, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> findBusinessMeal(Long businessId) throws NotFoundException {
+        Business findBusiness = businessRepository.findById(businessId).orElseThrow(() -> new NotFoundException("Business not found"));
+        return new ResponseEntity<>(findBusiness.getMeals(), HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> findOneMeal() {
+        return null;
     }
 }

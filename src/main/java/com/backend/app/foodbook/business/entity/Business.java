@@ -2,7 +2,7 @@ package com.backend.app.foodbook.business.entity;
 
 import com.backend.app.foodbook.auth.entity.User;
 import com.backend.app.foodbook.meal.entity.Meal;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -57,7 +57,8 @@ public class Business {
     )
     private List<Meal> meals;
 
-    @JsonIgnoreProperties({"businesses"})
+    //    @JsonIgnoreProperties({"businesses"})
+    @JsonIgnore
     @ManyToOne(
             fetch = FetchType.LAZY
     )
