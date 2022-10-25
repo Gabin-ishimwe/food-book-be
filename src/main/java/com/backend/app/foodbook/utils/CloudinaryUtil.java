@@ -19,4 +19,16 @@ public class CloudinaryUtil {
         Map uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
         return (String) uploadResult.get("secure_url");
     }
+
+    public String imageName(String name) {
+        String newName;
+        if (name.split(" ").length > 1) {
+            newName = String.join("_", name.split(" "));
+            System.out.println(newName);
+            return newName;
+        }
+        newName = String.join("", name.split(" "));
+        return newName;
+
+    }
 }

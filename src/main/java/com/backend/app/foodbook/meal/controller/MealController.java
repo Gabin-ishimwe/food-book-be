@@ -1,6 +1,5 @@
 package com.backend.app.foodbook.meal.controller;
 
-import com.backend.app.foodbook.exception.NotFoundException;
 import com.backend.app.foodbook.meal.dto.MealDto;
 import com.backend.app.foodbook.meal.service.MealService;
 import io.swagger.annotations.Api;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
 
 @RestController
 @RequestMapping(path = "/api/meal")
@@ -32,8 +30,8 @@ public class MealController {
             value = "Create Meal Menu",
             notes = "Api to create a meal on business menu"
     )
-    public ResponseEntity<?> createMeal(@ModelAttribute @Valid MealDto mealDto, @RequestParam("businessId") Long businessId, HttpServletRequest request) throws IOException, NotFoundException {
-        String token = request.getHeader("Authorization");
+    public ResponseEntity<?> createMeal(@ModelAttribute @Valid MealDto mealDto, @RequestParam("businessId") Long businessId, HttpServletRequest request) throws Exception {
+        String token = request.getHeader("Authorization").split(" ")[1];
         return mealService.createMealService(mealDto, businessId, token);
     }
 }

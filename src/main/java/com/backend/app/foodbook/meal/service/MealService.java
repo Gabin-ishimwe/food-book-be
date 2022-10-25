@@ -42,15 +42,27 @@ public class MealService {
     public ResponseEntity<?> createMealService(MealDto mealDto, Long businessId, String token) throws Exception {
         Business findBusiness = businessRepository.findById(businessId).orElseThrow(() -> new NotFoundException("Business not found"));
         String userEmail = jwtUtil.getUserNameFromToken(token);
+        if (!Objects.equals(findBusiness.getUser().getEmail(), userEmail)) {
+            throw new Exception("This business doesn't belong to you !!!");
+        }
+        List<Meal> businessMeals = findBusiness.getMeals();
+        for (Meal businessMeal : businessMeals) {
+            if (Objects.equals(businessMeal.getName(), mealDto.getMenuName())) {
+                return new ResponseEntity<>(new ResponseDto("Meals can't have the same name", null), HttpStatus.OK);
+            }
+        }
+
         List<String> imageUrls = new ArrayList<>();
         if (mealDto.getImages() == null) {
             throw new MultipartException("Images are required");
         }
+        System.out.println(mealDto.getImages().length);
         for (MultipartFile image : mealDto.getImages()) {
-            if (Objects.requireNonNull(image.getContentType()).toLowerCase().startsWith("image")) {
+            if (!image.isEmpty() && Objects.requireNonNull(image.getContentType()).toLowerCase().startsWith("image")) {
                 imageUrls.add(cloudinaryUtil.uploadImage(image));
+            } else {
+                throw new MultipartException("Upload valid Images");
             }
-//            throw new MultipartException("Upload valid image");
         }
         Meal meal = new Meal(
                 null,
@@ -60,13 +72,11 @@ public class MealService {
                 mealDto.getPrice()
         );
 
+
         Meal createdMeal = mealRepository.save(meal);
-
-        if (!Objects.equals(findBusiness.getUser().getEmail(), userEmail)) {
-            throw new Exception("This business doesn't belong to you !!!");
-        }
-
-//        findBusiness.setMeals();
+        businessMeals.add(createdMeal);
+        findBusiness.setMeals(businessMeals);
+        businessRepository.save(findBusiness);
 
         return new ResponseEntity<>(new ResponseDto("Meal created", createdMeal), HttpStatus.CREATED);
     }
