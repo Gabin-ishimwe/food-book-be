@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -29,6 +30,9 @@ public class MealDto {
     //    @NotEmpty(
 //            message = "Meal price is required"
 //    )
-    @NotBlank(message = "Price is required")
-    private Long price;
+//    @NotBlank(message = "Meal price is required")
+    @NotNull(
+            message = "Meal price is required"
+    )
+    private int price;
 }

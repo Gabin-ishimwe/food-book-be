@@ -86,6 +86,9 @@ public class MealService {
         Meal findMeal = null;
         int i = 0;
         while (true) {
+            if (findBusiness.getMeals().size() == i) {
+                throw new NotFoundException("Meal not found");
+            }
             if (Objects.equals(findBusiness.getMeals().get(i).getId(), mealId)) {
 //                Meal findMeal = mealRepository.findById(mealId).orElseThrow(() -> new NotFoundException("Meal not found"));
                 findMeal = findBusiness.getMeals().get(i);
@@ -93,15 +96,6 @@ public class MealService {
             }
             i++;
         }
-//        for (Meal meal : findBusiness.getMeals()) {
-//            if (Objects.equals(meal.getId(), mealId)) {
-////                Meal findMeal = mealRepository.findById(mealId).orElseThrow(() -> new NotFoundException("Meal not found"));
-//                findMeal = meal;
-//                break;
-//            } else {
-//                throw new NotFoundException("Meal not found in the business");
-//            }
-//        }
         assert findMeal != null;
         if (!Objects.equals(findMeal.getName(), mealDto.getMenuName()) && mealDto.getMenuName() != null) {
             findMeal.setName(mealDto.getMenuName());
@@ -109,7 +103,7 @@ public class MealService {
         if (!Objects.equals(findMeal.getDescription(), mealDto.getMenuDescription()) && mealDto.getMenuDescription() != null) {
             findMeal.setDescription(mealDto.getMenuDescription());
         }
-        if (!Objects.equals(findMeal.getPrice(), mealDto.getPrice()) && mealDto.getPrice() != null) {
+        if (!Objects.equals(findMeal.getPrice(), mealDto.getPrice()) && mealDto.getPrice() != 0) {
             findMeal.setPrice(mealDto.getPrice());
         }
         if (mealDto.getImages() != null) {
@@ -143,15 +137,6 @@ public class MealService {
 
             i++;
         }
-//        for (Meal meal : findBusiness.getMeals()) {
-//            if (Objects.equals(meal.getId(), mealId)) {
-////                Meal findMeal = mealRepository.findById(mealId).orElseThrow(() -> new NotFoundException("Meal not found"));
-//                return new ResponseEntity<>(meal, HttpStatus.OK);
-//            } else {
-//                return new ResponseEntity<>("There was an error", HttpStatus.INTERNAL_SERVER_ERROR);
-//            }
-//        }
-//        return new ResponseEntity<>("Meal not found", HttpStatus.NOT_FOUND);
     }
 
     public ResponseEntity<?> findOneMeal(Long mealId) throws NotFoundException {
@@ -179,8 +164,8 @@ public class MealService {
 
         int i = 0;
         while (true) {
-            if (findBusiness.getMeals().size() == 0) {
-                throw new NotFoundException("There are no meals in this business");
+            if (findBusiness.getMeals().size() == i) {
+                throw new NotFoundException("This meal doesn't exist in this business");
             }
             if (Objects.equals(findBusiness.getMeals().get(i).getId(), mealId)) {
                 mealRepository.deleteById(mealId);
@@ -188,15 +173,6 @@ public class MealService {
             }
             i++;
         }
-//        for (Meal meal : findBusiness.getMeals()) {
-//            if (Objects.equals(meal.getId(), mealId)) {
-//                mealRepository.deleteById(mealId);
-//                return new ResponseEntity<>("Meal deleted", HttpStatus.OK);
-//            } else {
-//                return new ResponseEntity<>("There was an error", HttpStatus.INTERNAL_SERVER_ERROR);
-//            }
-//        }
-//        return null;
     }
 
     public ResponseEntity<?> deleteAllBusinessMeals(Long businessId) throws NotFoundException {

@@ -29,5 +29,5 @@ public class Meal {
 
     @ElementCollection
     private List<String> images;
-    private Long price;
+    private int price;
 }

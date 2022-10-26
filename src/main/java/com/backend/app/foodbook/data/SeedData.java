@@ -55,7 +55,7 @@ public class SeedData implements CommandLineRunner {
                         "https://res.cloudinary.com/dmepvxtwv/image/upload/v1666764821/lr7aivqfbssjpzdia6nt.jpg",
                         "https://res.cloudinary.com/dmepvxtwv/image/upload/v1666764825/witbaux16mwgdftgurz2.jpg"
                 ),
-                5000L
+                5000
         );
 
         Meal meal2 = seedMeal(
@@ -65,7 +65,7 @@ public class SeedData implements CommandLineRunner {
                         "https://res.cloudinary.com/dmepvxtwv/image/upload/v1666764821/lr7aivqfbssjpzdia6nt.jpg",
                         "https://res.cloudinary.com/dmepvxtwv/image/upload/v1666764825/witbaux16mwgdftgurz2.jpg"
                 ),
-                3000L
+                3000
         );
         User user1 = seedUser(
                 "John",
@@ -118,7 +118,7 @@ public class SeedData implements CommandLineRunner {
         userRepository.save(user2);
     }
 
-    public Meal seedMeal(String name, String description, List<String> images, Long price) {
+    public Meal seedMeal(String name, String description, List<String> images, int price) {
         return mealRepository.save(
                 new Meal(
                         null,
