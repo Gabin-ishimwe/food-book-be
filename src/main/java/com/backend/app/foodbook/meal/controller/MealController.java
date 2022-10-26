@@ -39,6 +39,19 @@ public class MealController {
         return mealService.createMealService(mealDto, businessId, token);
     }
 
+    @PutMapping(
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    @PreAuthorize("hasRole('VENDOR')")
+    @ApiOperation(
+            value = "Update Meal Menu",
+            notes = "Api to update a meal on business menu"
+    )
+    public ResponseEntity<?> updateMeal(@ModelAttribute MealDto mealDto, @RequestParam("businessId") Long businessId, @RequestParam("mealId") Long mealId) throws Exception {
+        return mealService.updateMeal(mealDto, mealId, businessId);
+    }
+
+
     @GetMapping
     @PreAuthorize("hasRole('VENDOR')")
     @ApiOperation(

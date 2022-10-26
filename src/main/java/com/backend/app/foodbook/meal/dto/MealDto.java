@@ -29,5 +29,6 @@ public class MealDto {
     //    @NotEmpty(
 //            message = "Meal price is required"
 //    )
+    @NotBlank(message = "Price is required")
     private Long price;
 }

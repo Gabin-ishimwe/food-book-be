@@ -5,6 +5,8 @@ import com.backend.app.foodbook.auth.repository.UserRepository;
 import com.backend.app.foodbook.business.entity.Business;
 import com.backend.app.foodbook.business.repository.BusinessRepository;
 import com.backend.app.foodbook.exception.NotFoundException;
+import com.backend.app.foodbook.meal.entity.Meal;
+import com.backend.app.foodbook.meal.repository.MealRepository;
 import com.backend.app.foodbook.role.entity.Role;
 import com.backend.app.foodbook.role.repository.RoleRepository;
 import com.backend.app.foodbook.role.service.RoleService;
@@ -33,83 +35,137 @@ public class SeedData implements CommandLineRunner {
     @Autowired
     private BusinessRepository businessRepository;
 
+    @Autowired
+    private MealRepository mealRepository;
+
     @Override
     public void run(String... args) throws Exception {
         seedUsersAndRole();
     }
 
     public void seedUsersAndRole() throws NotFoundException {
-//        Role user = new Role(null, "USER");
-        Role user = Role.builder()
-                .name("USER")
-                .build();
-        Role vendor = Role.builder()
-                .name("VENDOR")
-                .build();
-//        Role vendor = new Role(null, "VENDOR");
-        Role admin = Role.builder()
-                .name("ADMIN")
-                .build();
-//        Role admin = new Role(null, "ADMIN");
 
-        Role roleUser = roleRepository.save(user);
-        Role roleVendor = roleRepository.save(vendor);
-        Role roleAdmin = roleRepository.save(admin);
-
-        Business business1 = new Business(
-                null,
-                "Meze Fresh",
-                "Mexican Restaurant in Kigali",
-                "mezefresh@gmail.com",
-                "07887878787",
-                null,
-                null
+        Role roleUser = seedRole("USER");
+        Role roleVendor = seedRole("VENDOR");
+        Role roleAdmin = seedRole("ADMIN");
+        Meal meal1 = seedMeal(
+                "Big Burger",
+                "sandwich bread and beef",
+                List.of(
+                        "https://res.cloudinary.com/dmepvxtwv/image/upload/v1666764821/lr7aivqfbssjpzdia6nt.jpg",
+                        "https://res.cloudinary.com/dmepvxtwv/image/upload/v1666764825/witbaux16mwgdftgurz2.jpg"
+                ),
+                5000L
         );
 
-        Business business = businessRepository.save(business1);
-
-        User user1 = new User(
-                null,
+        Meal meal2 = seedMeal(
+                "Chicken Wings",
+                "Grilled chickend with rice",
+                List.of(
+                        "https://res.cloudinary.com/dmepvxtwv/image/upload/v1666764821/lr7aivqfbssjpzdia6nt.jpg",
+                        "https://res.cloudinary.com/dmepvxtwv/image/upload/v1666764825/witbaux16mwgdftgurz2.jpg"
+                ),
+                3000L
+        );
+        User user1 = seedUser(
                 "John",
                 "Doe",
                 "john@gmail.com",
-                passwordEncoder.encode("#Password123"),
-                "0787857036",
-                null,
+                "#Password123",
+                "0787857046",
+                List.of(roleUser),
                 null
         );
-        User savedUser1 = userRepository.save(user1);
-        savedUser1.setRoles(List.of(roleUser));
-        userRepository.save(savedUser1);
 
-        User user2 = new User(
-                null,
+        User user2 = seedUser(
                 "Sam",
                 "Patrick",
                 "patrick@gmail.com",
-                passwordEncoder.encode("#Password123"),
-                "0787857036",
-                null,
-                List.of(business)
-        );
-        User savedUser2 = userRepository.save(user2);
-        savedUser2.setRoles(List.of(roleUser, roleVendor));
-        userRepository.save(savedUser2);
-
-        User user3 = new User(
-                null,
-                "Jane",
-                "Angel",
-                "jane@gmail.com",
-                passwordEncoder.encode("#Password123"),
-                "0787857036",
-                null,
+                "#Password123",
+                "07878570346",
+                List.of(roleUser, roleVendor),
                 null
         );
 
-        User savedUser3 = userRepository.save(user3);
-        savedUser3.setRoles(List.of(roleUser, roleVendor, roleAdmin));
-        userRepository.save(savedUser3);
+        User user3 = seedUser(
+                "Jane",
+                "Angel",
+                "angel@gmail.com",
+                "#Password123",
+                "0787383734",
+                List.of(roleUser, roleVendor, roleAdmin),
+                null
+        );
+        Business business1 = seedBusiness(
+                "Meze Fresh",
+                "Mexican Restaurant in Kigali",
+                "mezefresh@gmail.com",
+                "0787857043",
+                List.of(meal1, meal2),
+                user2
+        );
+
+        Business business2 = seedBusiness(
+                "BWOK",
+                "Italian Restaurant in Kigali",
+                "bwokkigali@gmail.com",
+                "0787857043",
+                null,
+                user2
+        );
+
+        user2.setBusinesses(List.of(business1, business2));
+        userRepository.save(user2);
+    }
+
+    public Meal seedMeal(String name, String description, List<String> images, Long price) {
+        return mealRepository.save(
+                new Meal(
+                        null,
+                        name,
+                        description,
+                        images,
+                        price
+                )
+        );
+    }
+
+    public Business seedBusiness(String name, String description, String email, String contact, List<Meal> meals, User user) {
+        return businessRepository.save(
+                new Business(
+                        null,
+                        name,
+                        description,
+                        email,
+                        contact,
+                        meals,
+                        null
+                )
+        );
+    }
+
+    public User seedUser(String firstName, String lastName, String email, String password, String contact, List<Role> roles, List<Business> businesses) {
+        return userRepository.save(
+                new User(
+                        null,
+                        firstName,
+                        lastName,
+                        email,
+                        passwordEncoder.encode(password),
+                        contact,
+                        roles,
+                        businesses
+                )
+        );
+    }
+
+    public Role seedRole(String name) {
+        return roleRepository.save(
+                new Role(
+                        null,
+                        name
+                )
+        );
     }
 }
 
