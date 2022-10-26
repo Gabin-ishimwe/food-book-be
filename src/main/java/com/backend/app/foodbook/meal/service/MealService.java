@@ -84,26 +84,24 @@ public class MealService {
         Business findBusiness = businessRepository.findById(businessId).orElseThrow(() -> new NotFoundException("Business not found"));
 //        Meal findMeal = mealRepository.findById(mealId).orElseThrow(() -> new NotFoundException("Meal not found"));
         Meal findMeal = null;
-//        for (Meal meal : findBusiness.getMeals()) {
-        for (int i = 0; i < findBusiness.getMeals().size(); i++) {
-            do {
-                findMeal = meal;
-            } while (findMeal != null);
-//            System.out.println(meal + "-------");
-//            System.out.println(meal[i].getId() + "---ID");
+        int i = 0;
+        while (true) {
             if (Objects.equals(findBusiness.getMeals().get(i).getId(), mealId)) {
-//                System.out.println(meal);
 //                Meal findMeal = mealRepository.findById(mealId).orElseThrow(() -> new NotFoundException("Meal not found"));
                 findMeal = findBusiness.getMeals().get(i);
-                i--;
                 break;
-            } else {
-//                System.out.println(findMeal);
-//                System.out.println(meal);
-                throw new NotFoundException("Meal not found in the business");
             }
+            i++;
         }
-
+//        for (Meal meal : findBusiness.getMeals()) {
+//            if (Objects.equals(meal.getId(), mealId)) {
+////                Meal findMeal = mealRepository.findById(mealId).orElseThrow(() -> new NotFoundException("Meal not found"));
+//                findMeal = meal;
+//                break;
+//            } else {
+//                throw new NotFoundException("Meal not found in the business");
+//            }
+//        }
         assert findMeal != null;
         if (!Objects.equals(findMeal.getName(), mealDto.getMenuName()) && mealDto.getMenuName() != null) {
             findMeal.setName(mealDto.getMenuName());
@@ -132,15 +130,28 @@ public class MealService {
 
     public ResponseEntity<?> findOneBusinessMeal(Long businessId, Long mealId) throws NotFoundException {
         Business findBusiness = businessRepository.findById(businessId).orElseThrow(() -> new NotFoundException("Business not found"));
-        for (Meal meal : findBusiness.getMeals()) {
-            if (Objects.equals(meal.getId(), mealId)) {
-//                Meal findMeal = mealRepository.findById(mealId).orElseThrow(() -> new NotFoundException("Meal not found"));
-                return new ResponseEntity<>(meal, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("There was an error", HttpStatus.INTERNAL_SERVER_ERROR);
+        int i = 0;
+        Meal findMeal = null;
+        while (true) {
+            if (i == findBusiness.getMeals().size()) {
+                throw new NotFoundException("Meal was not found in the business");
             }
+            if (Objects.equals(findBusiness.getMeals().get(i).getId(), mealId)) {
+                findMeal = findBusiness.getMeals().get(i);
+                return new ResponseEntity<>(findMeal, HttpStatus.OK);
+            }
+
+            i++;
         }
-        return new ResponseEntity<>("Meal not found", HttpStatus.NOT_FOUND);
+//        for (Meal meal : findBusiness.getMeals()) {
+//            if (Objects.equals(meal.getId(), mealId)) {
+////                Meal findMeal = mealRepository.findById(mealId).orElseThrow(() -> new NotFoundException("Meal not found"));
+//                return new ResponseEntity<>(meal, HttpStatus.OK);
+//            } else {
+//                return new ResponseEntity<>("There was an error", HttpStatus.INTERNAL_SERVER_ERROR);
+//            }
+//        }
+//        return new ResponseEntity<>("Meal not found", HttpStatus.NOT_FOUND);
     }
 
     public ResponseEntity<?> findOneMeal(Long mealId) throws NotFoundException {
@@ -163,24 +174,40 @@ public class MealService {
         return new ResponseEntity<>("All meals deleted", HttpStatus.OK);
     }
 
-    public ResponseEntity<?> deleteBusinessMeal(Long businessId, Long mealId) throws NotFoundException {
+    public ResponseEntity<?> deleteBusinessMeal(Long businessId, Long mealId) throws Exception {
         Business findBusiness = businessRepository.findById(businessId).orElseThrow(() -> new NotFoundException("Business not found"));
-        for (Meal meal : findBusiness.getMeals()) {
-            if (Objects.equals(meal.getId(), mealId)) {
+
+        int i = 0;
+        while (true) {
+            if (findBusiness.getMeals().size() == 0) {
+                throw new NotFoundException("There are no meals in this business");
+            }
+            if (Objects.equals(findBusiness.getMeals().get(i).getId(), mealId)) {
                 mealRepository.deleteById(mealId);
                 return new ResponseEntity<>("Meal deleted", HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("There was an error", HttpStatus.INTERNAL_SERVER_ERROR);
             }
+            i++;
         }
-        return null;
+//        for (Meal meal : findBusiness.getMeals()) {
+//            if (Objects.equals(meal.getId(), mealId)) {
+//                mealRepository.deleteById(mealId);
+//                return new ResponseEntity<>("Meal deleted", HttpStatus.OK);
+//            } else {
+//                return new ResponseEntity<>("There was an error", HttpStatus.INTERNAL_SERVER_ERROR);
+//            }
+//        }
+//        return null;
     }
 
     public ResponseEntity<?> deleteAllBusinessMeals(Long businessId) throws NotFoundException {
         Business findBusiness = businessRepository.findById(businessId).orElseThrow(() -> new NotFoundException("Business not found"));
-        for (Meal meal : findBusiness.getMeals()) {
-            mealRepository.deleteById(meal.getId());
-            return new ResponseEntity<>("All business meals deleted", HttpStatus.OK);
+        if (findBusiness.getMeals().size() == 0) {
+            throw new NotFoundException("There are no meals in this business");
+        } else {
+            for (Meal meal : findBusiness.getMeals()) {
+                mealRepository.deleteById(meal.getId());
+                return new ResponseEntity<>("All business meals deleted", HttpStatus.OK);
+            }
         }
         return null;
     }

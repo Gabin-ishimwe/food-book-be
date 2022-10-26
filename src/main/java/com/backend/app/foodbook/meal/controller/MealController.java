@@ -51,6 +51,26 @@ public class MealController {
         return mealService.updateMeal(mealDto, mealId, businessId);
     }
 
+    @GetMapping(path = "/business/one-meal")
+    @PreAuthorize("hasRole('VENDOR')")
+    @ApiOperation(
+            value = "Get One Meal from business",
+            notes = "Api to get one meal from a specific business"
+    )
+    public ResponseEntity<?> findOneBusinessMeal(@RequestParam("businessId") Long businessId, @RequestParam("mealId") Long mealId) throws NotFoundException {
+        return mealService.findOneBusinessMeal(businessId, mealId);
+    }
+
+    @GetMapping(path = "/one-meal/{mealId}")
+    @PreAuthorize("hasRole('VENDOR')")
+    @ApiOperation(
+            value = "Get One Meal",
+            notes = "Api to get one meal"
+    )
+    public ResponseEntity<?> findOneMeal(@PathVariable("mealId") Long mealId) throws NotFoundException {
+        return mealService.findOneMeal(mealId);
+    }
+
 
     @GetMapping
     @PreAuthorize("hasRole('VENDOR')")
@@ -70,5 +90,35 @@ public class MealController {
     )
     public ResponseEntity<?> findBusinessMeal(@PathVariable("businessId") Long id) throws NotFoundException {
         return mealService.findBusinessMeal(id);
+    }
+
+    @DeleteMapping
+    @PreAuthorize("hasRole('VENDOR')")
+    @ApiOperation(
+            value = "Delete all meals in the database",
+            notes = "Api to delete all meals in a business"
+    )
+    public ResponseEntity<?> deleteAllMeals() throws NotFoundException {
+        return mealService.deleteAllMeals();
+    }
+
+    @DeleteMapping(path = "/business/one-meal")
+    @PreAuthorize("hasRole('VENDOR')")
+    @ApiOperation(
+            value = "Delete one meal in business",
+            notes = "Api to delete one meal in particular business"
+    )
+    public ResponseEntity<?> deleteOneBusinessMeal(@RequestParam("businessId") Long businessId, @RequestParam("mealId") Long mealId) throws Exception {
+        return mealService.deleteBusinessMeal(businessId, mealId);
+    }
+
+    @DeleteMapping(path = "/business")
+    @PreAuthorize("hasRole('VENDOR')")
+    @ApiOperation(
+            value = "Delete all meals in business",
+            notes = "Api to delete all meals in particular business"
+    )
+    public ResponseEntity<?> deleteAllBusinessMeals(@RequestParam("businessId") Long businessId) throws NotFoundException {
+        return mealService.deleteAllBusinessMeals(businessId);
     }
 }
