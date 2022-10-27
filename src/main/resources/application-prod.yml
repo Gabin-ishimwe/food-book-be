@@ -13,6 +13,9 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
   datasource:
     url: ${DATABASE_URL}
@@ -29,6 +32,10 @@ spring:
 app:
   jwt:
     secret: ${JWT_SECRET_KEY}
+  authorities:
+    USER: USER
+    VENDOR: VENDOR
+    ADMIN: ADMIN
 
 
 cloudinary:
