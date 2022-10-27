@@ -48,7 +48,7 @@ public class MealService {
         }
         List<Meal> businessMeals = findBusiness.getMeals();
         for (Meal businessMeal : businessMeals) {
-            if (Objects.equals(businessMeal.getName(), mealDto.getMenuName())) {
+            if (Objects.equals(businessMeal.getName(), mealDto.getMealName())) {
                 return new ResponseEntity<>(new ResponseDto("Meals can't have the same name", null), HttpStatus.OK);
             }
         }
@@ -65,10 +65,11 @@ public class MealService {
         }
         Meal meal = new Meal(
                 null,
-                mealDto.getMenuName(),
-                mealDto.getMenuDescription(),
+                mealDto.getMealName(),
+                mealDto.getMealDescription(),
                 imageUrls,
-                mealDto.getPrice()
+                mealDto.getPrice(),
+                false
         );
 
 
@@ -97,11 +98,11 @@ public class MealService {
             i++;
         }
         assert findMeal != null;
-        if (!Objects.equals(findMeal.getName(), mealDto.getMenuName()) && mealDto.getMenuName() != null) {
-            findMeal.setName(mealDto.getMenuName());
+        if (!Objects.equals(findMeal.getName(), mealDto.getMealName()) && mealDto.getMealName() != null) {
+            findMeal.setName(mealDto.getMealName());
         }
-        if (!Objects.equals(findMeal.getDescription(), mealDto.getMenuDescription()) && mealDto.getMenuDescription() != null) {
-            findMeal.setDescription(mealDto.getMenuDescription());
+        if (!Objects.equals(findMeal.getDescription(), mealDto.getMealDescription()) && mealDto.getMealDescription() != null) {
+            findMeal.setDescription(mealDto.getMealDescription());
         }
         if (!Objects.equals(findMeal.getPrice(), mealDto.getPrice()) && mealDto.getPrice() != 0) {
             findMeal.setPrice(mealDto.getPrice());

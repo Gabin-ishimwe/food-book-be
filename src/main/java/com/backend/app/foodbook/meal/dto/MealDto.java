@@ -15,12 +15,12 @@ public class MealDto {
     @NotBlank(
             message = "Meal name is required"
     )
-    private String menuName;
+    private String mealName;
 
     @NotBlank(
             message = "Meal description is required"
     )
-    private String menuDescription;
+    private String mealDescription;
 
     //    @NotBlank(
 //            message = "Meal image is required"
