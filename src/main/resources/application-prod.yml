@@ -17,6 +17,9 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+  ## 6yubfw4ztp17jlx9nc0d name
+  ## pscale_pw_9qqJP1zHjeINtbzS1hJ5OONhcHpK13XZcvKNw4nt6rK pasword
+  ##   jdbc:mysql://us-east.connect.psdb.cloud/food_book_app?sslMode=VERIFY_IDENTITY url
   datasource:
     url: ENC(+5NKj7rasml9qcoWQ0yhKslteMxVZkoSGa95UQ+Andqg8En6YSRiT4V/w8rKu4UKvsZOpyDsSlErqOZTKW7HRV2xzZGGbFug9EuBgRq8hXdi5YOc79oirvMykJK06bSvG4pdQLoHc2AzQdd2X6hT8Q==)
     username: ENC(gpKeGJTKijEjFxeuNtbMIJQZam8zGAFdNHzz+q1gt8F9BFkEvhu6M21c4fTm6PpIz6sPXomwRMIfowFo3jV0yw==)
