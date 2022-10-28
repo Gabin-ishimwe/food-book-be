@@ -18,9 +18,9 @@ spring:
       matching-strategy: ant_path_matcher
 
   datasource:
-    url: ${DATABASE_URL}
-    username: ${USER_NAME}
-    password: ${PASSWORD}
+    url: ENC(CwhC0SIdtxufYyevOoPgX9y8oG2cEu064NdN8PYqvdn71BkMJL8wxmUz2tpbgUrGTmp8En8bsyhThHq6qJEA4vRCMQMfGkiBjPqzSaOMkGEQV/HPiyzRvRm6Wy4qV8nYr7lXLUpT992uHNOuuWWCh4x7MzRu5GgQKJVi03bjgrQ=)
+    username: ENC(5uwNmtdykdjahgINm3ygI/STVt4gr0TfnGWoBD2M6Kg9CzDP8+CETRLJFaeJ2WpM)
+    password: ENC(SFhRlOR00MhwqnIqNqwol+dv8kWI3HC0xTibB/OGf/vViup/L/zU/EkyvQyE+30TLoQYErDzDguCVanLSmvmmw==)
 
   servlet:
     multipart:
@@ -31,7 +31,7 @@ spring:
 
 app:
   jwt:
-    secret: ${JWT_SECRET_KEY}
+    secret: ENC(tOjyId8Q3UFv5vOGzILD94UUtoB1XVD1a3/OMRCdgY3dLrqVR0cgqRB97DYFVviTGVZTloUGRGP0pcyziH8NVw==)
   authorities:
     USER: USER
     VENDOR: VENDOR
