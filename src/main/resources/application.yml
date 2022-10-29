@@ -4,6 +4,8 @@ server:
     include-message: always
 
 spring:
+  profiles:
+    active: @activatedProperties@
   jpa:
     hibernate:
       ddl-auto: create-drop

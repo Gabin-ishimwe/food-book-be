@@ -2,6 +2,7 @@ package com.backend.app.foodbook.order.entity;
 
 import com.backend.app.foodbook.meal.entity.Meal;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,10 +10,11 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "order")
+@Table(name = "customer_orders")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Order {
 
     @Id
@@ -42,4 +44,6 @@ public class Order {
     private List<Meal> meal;
 
     private Long amount;
+
+    private boolean orderPlaced = false;
 }

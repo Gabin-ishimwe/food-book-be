@@ -1,6 +1,5 @@
 package com.backend.app.foodbook.role.entity;
 
-import com.backend.app.foodbook.auth.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -26,7 +24,15 @@ import java.util.List;
 )
 public class Role {
     @Id
-    @GeneratedValue
+    @SequenceGenerator(
+            sequenceName = "role_id_sequence",
+            name = "role_id_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            generator = "role_id_sequence",
+            strategy = GenerationType.SEQUENCE
+    )
     private Long id;
     @NotBlank(
             message = "Role name is required"

@@ -3,9 +3,12 @@ server:
   error:
     include-message: always
 
+
 spring:
-  profiles: prod
+  profiles:
+    active: @activatedProperties@
   jpa:
+    #    generate-ddl: true
     hibernate:
       ddl-auto: create-drop
     properties:
@@ -17,13 +20,10 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-  ## 6yubfw4ztp17jlx9nc0d name
-  ## pscale_pw_9qqJP1zHjeINtbzS1hJ5OONhcHpK13XZcvKNw4nt6rK pasword
-  ##   jdbc:mysql://us-east.connect.psdb.cloud/food_book_app?sslMode=VERIFY_IDENTITY url
   datasource:
-    url: ENC(+5NKj7rasml9qcoWQ0yhKslteMxVZkoSGa95UQ+Andqg8En6YSRiT4V/w8rKu4UKvsZOpyDsSlErqOZTKW7HRV2xzZGGbFug9EuBgRq8hXdi5YOc79oirvMykJK06bSvG4pdQLoHc2AzQdd2X6hT8Q==)
-    username: ENC(gpKeGJTKijEjFxeuNtbMIJQZam8zGAFdNHzz+q1gt8F9BFkEvhu6M21c4fTm6PpIz6sPXomwRMIfowFo3jV0yw==)
-    password: ENC(uvpRsZ7dtJ8qTXOCo/Ty4WZxZs/nZU2m6EIXLCiRNBugdRC1fTyNmJZvy4DroassUsF1fEC19ACsDjxX3w2Ay9gtCXEZ5z2as3zp4xbsYZv4q/fs8hAmPRPDbFNDTZTH)
+    url: ENC(ahxodd4wWJlvVmGB+6bFPtXllVO/hfHEYkXQmOqoNf2qoy9fMzppqcht7PHvhHBDu2QEg08AWqleEaFDRfE5ZWo3wZshEklGARkLPspYNWIdnvof3/CmKnOeKh68D1WYOTm+IYOybWNMOG/mpA/kQ5V+7JflA0U/cY14OVuCVArkN9DyDhi03CZvVhw3SWOr)
+    username: ENC(du2Ae1DHiukIYz+yELH4w/CPgqH+rouEftXT/L6rCUsDy7v9voNxN+K+PO1zu/qG)
+    password: ENC(LOdf0fuDPHzEeQhnIy5htXSUCEI52i32afIbBPXijpCbs9fcL5x4KvnnusSa4dq3i0BgBrBi4RKeRqUpj2KTAw==)
 
   servlet:
     multipart:
