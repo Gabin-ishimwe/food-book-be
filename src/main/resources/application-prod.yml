@@ -6,7 +6,7 @@ server:
 
 spring:
   profiles:
-    active: @activatedProperties@
+    active: prod
   jpa:
     #    generate-ddl: true
     hibernate:

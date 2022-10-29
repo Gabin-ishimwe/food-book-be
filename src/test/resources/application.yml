@@ -17,11 +17,13 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
+  h2:
+    console.enabled: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/springdb
-    username: andelarwanda
-    password: andela123
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
 
   servlet:
     multipart:
