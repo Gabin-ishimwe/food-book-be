@@ -27,11 +27,11 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
     UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, JwtUtil jwtUtil, RoleRepository roleRepository) {
@@ -46,10 +46,10 @@ public class UserService {
         User findUser = userRepository.findByEmail(registerDto.getEmail());
         List<Role> roles = new ArrayList<>();
         if (findUser != null) {
-            throw new UserExistsException("User arleady exists");
+            throw new UserExistsException("User already exists");
         }
         Role userRole = roleRepository.findByName("USER");
-        if(userRole == null) {
+        if (userRole == null) {
             throw new NotFoundException("User not found");
         }
         roles.add(userRole);
@@ -85,14 +85,14 @@ public class UserService {
         String password = loginDto.getPassword();
 
         User findUser = userRepository.findByEmail(userEmail);
-        if(findUser != null) {
+        if (findUser != null) {
             boolean passwordVerification = passwordEncoder.matches(password, findUser.getPassword());
-            if(passwordVerification) {
+            if (passwordVerification) {
                 return createJwt(findUser);
             } else {
                 throw new UserAuthException("Invalid Credential, Try again");
             }
-        }else {
+        } else {
             throw new UserAuthException("Invalid Credential, Try again");
         }
     }

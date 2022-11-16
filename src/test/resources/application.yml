@@ -7,11 +7,12 @@ spring:
   #  profiles:
   #    active: @activatedProperties@
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        #        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
   mvc:

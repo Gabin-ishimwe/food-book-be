@@ -14,7 +14,7 @@ class UserRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    void findByEmail() {
+    void itShouldTestFindUserByEmail() {
         User testUser = User.builder()
                 .firstName("gabin")
                 .lastName("ishimwe")
