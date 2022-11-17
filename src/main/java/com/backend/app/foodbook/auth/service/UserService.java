@@ -50,7 +50,7 @@ public class UserService {
         }
         Role userRole = roleRepository.findByName("USER");
         if (userRole == null) {
-            throw new NotFoundException("User not found");
+            throw new NotFoundException("User role not found");
         }
         roles.add(userRole);
         User user = new User(

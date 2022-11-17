@@ -2,6 +2,7 @@ package com.backend.app.foodbook.auth.dto;
 
 import com.backend.app.foodbook.validation.passwordValidation.Password;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class RegisterDto {
     @NotBlank(
             message = "First name is required"
@@ -39,7 +41,5 @@ public class RegisterDto {
     @NotBlank(
             message = "Contact number is required"
     )
-    private String ContactNumber;
-
-    private String testing;
+    private String contactNumber;
 }
