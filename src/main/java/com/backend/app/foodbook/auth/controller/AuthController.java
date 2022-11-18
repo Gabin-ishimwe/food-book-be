@@ -6,7 +6,6 @@ import com.backend.app.foodbook.auth.dto.RegisterDto;
 import com.backend.app.foodbook.auth.entity.User;
 import com.backend.app.foodbook.auth.exception.UserAuthException;
 import com.backend.app.foodbook.auth.exception.UserExistsException;
-import com.backend.app.foodbook.auth.service.JwtService;
 import com.backend.app.foodbook.auth.service.UserService;
 import com.backend.app.foodbook.exception.NotFoundException;
 import io.swagger.annotations.Api;
@@ -24,12 +23,9 @@ public class AuthController {
 
     private final UserService userService;
 
-    private final JwtService jwtService;
-
     @Autowired
-    AuthController(UserService userService, JwtService jwtService) {
+    AuthController(UserService userService) {
         this.userService = userService;
-        this.jwtService = jwtService;
     }
 
     @PostMapping(path = "/register")
