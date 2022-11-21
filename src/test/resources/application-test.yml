@@ -4,27 +4,24 @@ server:
     include-message: always
 
 spring:
-  #    profiles:
-  #      active: @activatedProperties@
+  #  profiles:
+  #    active: test
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
     properties:
       hibernate:
-        #        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-  h2:
-    console.enabled: true
+
   datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
+    url: jdbc:postgresql://localhost:5432/springdb
+    username: andelarwanda
+    password: andela123
 
   servlet:
     multipart:
