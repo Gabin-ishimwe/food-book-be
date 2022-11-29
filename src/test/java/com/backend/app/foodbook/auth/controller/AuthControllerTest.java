@@ -1,16 +1,23 @@
 package com.backend.app.foodbook.auth.controller;
 
+import com.backend.app.foodbook.auth.dto.AuthDto;
 import com.backend.app.foodbook.auth.dto.RegisterDto;
 import com.backend.app.foodbook.auth.entity.User;
+import com.backend.app.foodbook.auth.repository.UserRepository;
+import com.backend.app.foodbook.auth.service.JwtService;
 import com.backend.app.foodbook.auth.service.UserService;
+import com.backend.app.foodbook.role.repository.RoleRepository;
+import com.backend.app.foodbook.utils.JwtUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
@@ -19,17 +26,19 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
 @WebMvcTest(AuthController.class)
+//@ComponentScan("com.backend.app.foodbook.utils.JwtUtil")
 class AuthControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @InjectMocks
+    @MockBean
     private UserService userService;
 
     private RegisterDto registerDto;
@@ -38,19 +47,23 @@ class AuthControllerTest {
 
     private User registeredUser2;
 
-//    @Mock
-//    private UserRepository userRepository;
-//    @Mock
-//    private RoleRepository roleRepository;
-//    @Mock
-//    private PasswordEncoder passwordEncoder;
-//    @Mock
-//    private JwtService jwtService;
-//    @Mock
-//    private JwtUtil jwtUtil;
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private RoleRepository roleRepository;
+    @Mock
+    private PasswordEncoder passwordEncoder;
+    @Mock
+    private JwtService jwtService;
+    @Mock
+    private JwtUtil jwtUtil;
 
     @BeforeEach
     void setUp() {
+//        userService = new UserService(userRepository, passwordEncoder, jwtService, jwtUtil, roleRepository);
         registerDto = RegisterDto.builder()
                 .firstName("ishimwe")
                 .lastName("gabin")
@@ -74,6 +87,17 @@ class AuthControllerTest {
                 .password("#Password123")
                 .contactNumber("078783470123")
                 .build();
+    }
+
+    @Test
+    @DisplayName("User register controller")
+    void itShouldRegisterUser() throws Exception {
+        AuthDto registerResponse = AuthDto.builder().message("User registered").token("Token").build();
+        when(userService.userRegister(registerDto)).thenReturn(registerResponse);
+        mockMvc.perform(post("/api/auth/register")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(registerDto)))
+                .andExpect(status().isOk());
     }
 
     @Test
