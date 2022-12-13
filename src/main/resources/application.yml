@@ -20,8 +20,8 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5432/springdb
-    username: andelarwanda
-    password: andela123
+    username: postgres
+    password: andela
 
   servlet:
     multipart:
