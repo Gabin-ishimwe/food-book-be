@@ -21,7 +21,8 @@ public class JwtService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(username);
-        if(user != null) {
+        if (user != null) {
+            // we pass this user in spring security, all this information and security roles
             return new org.springframework.security.core.userdetails.User(
                     user.getEmail(),
                     user.getPassword(),
@@ -35,9 +36,7 @@ public class JwtService implements UserDetailsService {
     private List<SimpleGrantedAuthority> authorities(User user) {
         List<SimpleGrantedAuthority> auths = new ArrayList<>();
         System.out.println(user.getRoles() + " user roless");
-        user.getRoles().forEach(role -> {
-            auths.add(new SimpleGrantedAuthority( "ROLE_"+ role.getName()));
-        });
+        user.getRoles().forEach(role -> auths.add(new SimpleGrantedAuthority("ROLE_" + role.getName())));
 
         return auths;
     }
