@@ -19,7 +19,7 @@ spring:
       matching-strategy: ant_path_matcher
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/springdb
+    url: jdbc:postgresql://localhost:5432/foodbook
     username: postgres
     password: andela
 
